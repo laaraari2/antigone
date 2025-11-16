@@ -1,37 +1,28 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current working directory.
-  const env = loadEnv(mode, process.cwd(), '');
+export default defineConfig({
+  plugins: [react()],
+  base: '/antigone/',
   
-  // For GitHub Pages, we need to ensure the base is set correctly
-  const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+  optimizeDeps: {
+    exclude: ['lucide-react'],
+  },
   
-  return {
-    plugins: [react()],
-    base: isGitHubPages ? '/antigone/' : '/',
-    
-    optimizeDeps: {
-      exclude: ['lucide-react'],
-    },
-    
-    build: {
-      outDir: 'dist',
-      assetsDir: 'assets',
-      emptyOutDir: true,
-      rollupOptions: {
-        input: {
-          main: resolve(__dirname, 'index.html'),
-        },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
       },
     },
-    
-    server: {
-      port: 3000,
-      open: true,
-    },
-  };
+  },
+  
+  server: {
+    port: 3000,
+    open: true,
+  }
 });
