@@ -7,9 +7,12 @@ export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   const env = loadEnv(mode, process.cwd(), '');
   
+  // For GitHub Pages, we need to ensure the base is set correctly
+  const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+  
   return {
     plugins: [react()],
-    base: env.NODE_ENV === 'production' ? '/antigone/' : '/',
+    base: isGitHubPages ? '/antigone/' : '/',
     
     optimizeDeps: {
       exclude: ['lucide-react'],
